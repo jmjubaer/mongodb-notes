@@ -1,3 +1,8 @@
+// create a new collection
+db.createCollection("new")
+// delete the collection
+db.new.drop()
+
 // filtering by field ====================================================
 
 db.collectionName.find({ fieldName: fieldValue });
@@ -134,6 +139,25 @@ db.test.updateOne(
     }
 );
 
+// For update the object type data.
+db.test.updateOne(
+    {
+        _id: ObjectId("6406ad63fc13ae5a40000065"),
+    },
+    {
+        $set: { "name.firstName": "Pinik" }, // we can use dot notation.
+    }
+);
+
+// For update the array of objects type data.
+db.test.updateOne({
+    _id: ObjectId("6406ad63fc13ae5a40000065"),
+    "skills.name" :"GO" // for filter the exact object
+},{
+$set: {"skills.$.level" : "Intermidiate"} // use $ for confirm the fist match are update. there "$" is a positional operator
+})
+
+
 $addToSet; // $addToSet operator or non-primitive operator
 // its update the specific filled with not overrid or not remove the previous data. its not push multiple data in a field.
 
@@ -177,3 +201,69 @@ db.test.updateOne(
         },
     }
 );
+$unset; // unset operator
+// For removing the the field from the data.
+db.test.updateOne(
+    {
+        _id: ObjectId("6406ad63fc13ae5a40000065"),
+    },
+    {
+        $unset: { birthday: "" }, // we can use "" or 1.
+        $unset: { birthday: 1 },
+    }
+);
+
+$pop; // $pop operator , array operator
+// for removing the last or first data on the array type data. use 1 for last child and use -1 for first child.
+db.test.updateOne(
+    {
+        _id: ObjectId("6406ad63fc13ae5a40000065"),
+    },
+    {
+        $pop: { interests: 1 }, // for last child
+        //  $pop: {interests: -1} // for first child
+    }
+);
+
+$pull; // $pop operator, array operator
+// for removing the define child data on the array type data.
+db.test.updateOne(
+    {
+        _id: ObjectId("6406ad63fc13ae5a40000065"),
+    },
+    {
+        $pull: { interests: "Farming" },
+    }
+);
+
+$pullAll; // $pullAll operator, array operator
+// for removing the define all child data on the array type data. For removing multiple child at a time.
+db.test.updateOne(
+    {
+        _id: ObjectId("6406ad63fc13ae5a40000065"),
+    },
+    {
+        $pullAll: { interests: ["Driving", "Learing"] },
+    }
+);
+
+$inc; // increment operator
+// For incrementing the number type value
+
+db.test.updateOne(
+    {
+        _id: ObjectId("6406ad63fc13ae5a40000065"),
+    },
+    {
+        $inc: { age: 5 }, // pass how many quantities you want to increment.
+    }
+);
+
+
+
+// delete the data
+// deleteOne method
+db.test.deleteOne({_id: ObjectId("6406ad63fc13ae5a40000065")})
+
+
+
