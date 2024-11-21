@@ -3,6 +3,20 @@ db.createCollection("new")
 // delete the collection
 db.new.drop()
 
+// for creating new indexing. its consume memory becarefull
+db.getCollection("massive-data").createIndex({email: 1}) // index field.
+
+// for creating compound indexing.
+db.getCollection("massive-data").createIndex({age: 1,gender: -1}) // 1 for ascending -1 for descending
+
+// search indexing
+db.getCollection("massive-data").createIndex({about : "text"}) // search indexing use "text"
+
+// for searching by text.
+$search // search operator
+$text // text search operator.`
+db.getCollection("massive-data").find({$text: { $search: "dolor" }}) // searching operator
+
 // filtering by field ====================================================
 
 db.collectionName.find({ fieldName: fieldValue });
